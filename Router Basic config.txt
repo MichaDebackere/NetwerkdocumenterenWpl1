@@ -1,0 +1,35 @@
+enable
+configure terminal
+line console 0
+password Student
+login
+exit
+enable secret pxl
+service password-encryption
+
+hostname Router1
+ip domain-name cisco.local
+crypto key generate rsa general-keys modulus 2048
+username admin password pxl
+line vty 0 4
+transport input ssh
+password pxl
+login local
+end
+
+interface GigabitEthernet0/0/0
+description Link naar Switch 1
+ip address 192.168.1.12  255.255.255.240
+no shutdown
+exit
+
+interface GigabitEthernet0/0/1
+description Link naar Switch 2
+ip address 10.0.2.1 255.255.255.0
+no shutdown
+exit
+
+
+ip routing
+ipv6 unicast-routing
+copy running-config startup-config
